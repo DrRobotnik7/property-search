@@ -3,9 +3,9 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faBed } from "@fortawesome/free-solid-svg-icons";
 import { faShower } from "@fortawesome/free-solid-svg-icons";
 import Button from "../Button/Button";
-import "./Property.css";
+import "./PropertyCard.css";
 
-export default function Property({
+export default function PropertyCard({
   imgUrl,
   propertyName,
   cost,

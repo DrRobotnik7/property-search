@@ -1,13 +1,9 @@
-import Footer from "../Footer/Footer";
-import Header from "../Header/Header";
-import JumboTron from "../JumboTron/JumboTron";
-import NavBar from "../NavBar/NavBar";
+import JumboTron from '../../components/JumboTron/JumboTron'
 
 export default function HomePage() {
   return (
     <>
-    <Header />
-      <Footer />
+      <JumboTron />
     </>
   );
 }

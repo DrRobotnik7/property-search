@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import SearchInput from "../SearchInput/SearchInput"
-import background from "../JumboTron/BackgroundImage.jpg"
+import background from "../../assets/images/BackgroundImage.jpg"
 
 
 const JumboTron = () => {
