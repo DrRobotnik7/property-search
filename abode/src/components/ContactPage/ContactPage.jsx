@@ -3,7 +3,7 @@ import NavBar from "../NavBar/NavBar"
 export default function ContactPage() {
   return (
   <>
-  < NavBar/>
+  <NavBar />
   <h1>Hello Contact Page</h1>
   </>
   );
