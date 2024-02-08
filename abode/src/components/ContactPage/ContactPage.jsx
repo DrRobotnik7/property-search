@@ -1,3 +1,10 @@
+import NavBar from "../NavBar/NavBar"
+
 export default function ContactPage() {
-  return <h1>Hello Contact Page</h1>;
-}
+  return (
+  <>
+  < NavBar/>
+  <h1>Hello Contact Page</h1>
+  </>
+  );
+};
