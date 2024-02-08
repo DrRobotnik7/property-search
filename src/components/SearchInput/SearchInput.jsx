@@ -1,6 +1,7 @@
 export default function SearchInput() {
   return (
     <>
+    <h2 className="text-blue-200">TEST TEXT</h2>
       <input
         type="text"
         required
