@@ -1,13 +1,6 @@
-:root {
-  --primary: #14213d;
-  --secondary: #fca311;
-  --tertiary: #e5e5e5;
-}
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
