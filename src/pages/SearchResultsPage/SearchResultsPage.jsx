@@ -1,53 +1,48 @@
 import PropertyCard from "../../components/PropertyCard/PropertyCard";
-
-// import { useState, useEffect } from 'react';
-// const Fetch = () => {
-//   const [photos, setPhotos] = useState([]);
-//   useEffect(() => {
-//     fetch('https://jsonplaceholder.typicode.com/photos')
-//       .then((res) => {
-//         return res.json();
-//       })
-//       .then((data) => {
-//         console.log(data);
-//         setPhotos(data);
-//       });
-//   }, [searchInput]); // This should be whenever the user hits enter so whenever that changes the fetch reruns
-//   return (
-//     <div>
-      
-//       {photos.map((photo) => (
-//         <img key={photo.id} src={photo.url} alt={photo.title} width={100} />
-//       ))}
-//     </div>
-//   );
-// };
-// export default Fetch;
-
-const handleSearch = () => {
-  // take the value of the search input
-  // run the API call with search input value in the URL
-  // update the local variable that stores the property cards, using useState
-  // map through the array of properties and return property cards for each item
-}
-
+import { useState } from "react";
+import SearchInput from "../../components/SearchInput/SearchInput";
+import { testData } from "../../data.js";
+import SearchResults from "../../components/SearchResults/SearchResults.jsx";
 
 export default function SearchResultsPage() {
+  function handleSearch(target) {
+    setSearchTerm(target.target.value);
+    console.log("Key pressed " + target.key);
+    console.log("Current search term " + searchTerm);
+
+    if (target.key === "Enter") {
+      //call API and get data
+      // console.log("Property Name" + testData.listing[0].displayable_address);
+      // console.log(
+      //   "Property Description" + testData.listing[0].short_description
+      // );
+
+      const propsArray = testData.listing.map((listing) => {
+        return {
+          address: listing.displayable_address,
+          description: listing.short_description,
+          image: listing.original_image[0],
+          bathrooms: listing.num_bathrooms,
+          bedrooms: listing.num_bedrooms,
+          cost: listing.price,
+        };
+      });
+
+      console.log(propsArray);
+      setPropertiesArray(propsArray);
+
+      //map data to format as needed
+      //return new property data array
+      // setPropertiesArray(propertyData);
+    }
+  }
+  const [searchTerm, setSearchTerm] = useState([""]);
+  const [propertiesArray, setPropertiesArray] = useState([]);
   return (
     <>
       <h1>Hello Search Results Page</h1>;
-      <PropertyCard
-        imgUrl={
-          "https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg"
-        }
-        propertyName={"23 Stanley Road LUTON, LU14 9EW"}
-        bathrooms={"2"}
-        bedrooms={"2"}
-        cost={"200,000"}
-        description={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        }
-      />
+      <SearchInput onInputChange={handleSearch} />
+      <SearchResults properties={propertiesArray} />
     </>
   );
 }
