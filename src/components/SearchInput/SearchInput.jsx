@@ -1,4 +1,5 @@
-export default function SearchInput() {
+import "./SearchInput.css";
+export default function SearchInput({ onInputChange }) {
   return (
     <>
       <input
@@ -7,6 +8,7 @@ export default function SearchInput() {
         size="10"
         placeholder="Search postcode"
         width={"200px"}
+        onKeyUp={onInputChange}
       />
     </>
   );
