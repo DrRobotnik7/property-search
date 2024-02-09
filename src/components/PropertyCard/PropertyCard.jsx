@@ -31,11 +31,10 @@ export default function PropertyCard({
             <div className="flex flex-row items-center space-x-10">
               <p>{cost}</p>
               <span className="space-x-4">
-                <FontAwesomeIcon icon={faBed} /> {bedrooms}
+                <FontAwesomeIcon icon={faBed} /> x {bedrooms}
               </span>
               <span>
-                <FontAwesomeIcon icon={faShower} />
-                {bathrooms}
+                <FontAwesomeIcon icon={faShower} /> x {bathrooms}
               </span>
             </div>
             <p className="mt-8 text-black text-left">{description}</p>
