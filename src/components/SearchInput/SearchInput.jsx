@@ -1,13 +1,11 @@
 export default function SearchInput() {
   return (
     <>
-    <h2 className="text-blue-200">TEST TEXT</h2>
-      <input
+      <input className="rounded-full w-96 h-12 text-center"
         type="text"
         required
-        size="10"
-        placeholder="Search postcode"
-        width={"200px"}
+        // size="10"
+        placeholder:text-center="Search Area"
       />
     </>
   );
