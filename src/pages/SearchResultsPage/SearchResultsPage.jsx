@@ -1,14 +1,41 @@
 import PropertyCard from "../../components/PropertyCard/PropertyCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import { testData } from "../../data.js";
 import SearchResults from "../../components/SearchResults/SearchResults.jsx";
+import Filter from "../../components/Filter/Filter.jsx";
 
 export default function SearchResultsPage() {
+  const location = useLocation();
+  // console.log(location.state.search);
+
+  useEffect(() => {
+    // run API call with
+    location.state.search;
+    console.log("loaded");
+  });
+
+  useEffect(() => {
+    // update properties array
+  });
+
+  function handleFilterSelect(target) {
+    setSearchFilters((currentFilters) => {
+      const name = target.target.name;
+      const value = target.target.value;
+
+      const newFilters = currentFilters;
+      newFilters[0][name] = value;
+      return [newFilters];
+    });
+    console.log(searchFilters);
+  }
+
   function handleSearch(target) {
     setSearchTerm(target.target.value);
-    console.log("Key pressed " + target.key);
-    console.log("Current search term " + searchTerm);
+    // console.log("Key pressed " + target.key);
+    // console.log("Current search term " + searchTerm);
 
     if (target.key === "Enter") {
       //call API and get data
@@ -30,17 +57,25 @@ export default function SearchResultsPage() {
 
       console.log(propsArray);
       setPropertiesArray(propsArray);
-
-      //map data to format as needed
-      //return new property data array
-      // setPropertiesArray(propertyData);
     }
   }
-  const [searchTerm, setSearchTerm] = useState([""]);
+  const [searchTerm, setSearchTerm] = useState([location.state.search]);
   const [propertiesArray, setPropertiesArray] = useState([]);
+  const [searchFilters, setSearchFilters] = useState([
+    {
+      maxCost: "",
+      minCost: "",
+      PropertyType: "",
+    },
+  ]);
   return (
     <>
-      <h1>Hello Search Results Page</h1>;
+      <h1>Hello Search Results Page</h1>;<h2>{searchTerm}</h2>
+      <Filter
+        name={"Max cost"}
+        options={[300000, 50000, 600000, 700000]}
+        handleSelect={handleFilterSelect}
+      />
       <SearchInput onInputChange={handleSearch} />
       <SearchResults properties={propertiesArray} />
     </>
