@@ -150,7 +150,8 @@ export default function SearchResultsPage() {
             matchesMinBeds &&
             matchesMaxBeds &&
             matchesPropertyType &&
-            (matchesRent || matchesSale)
+            matchesRent &&
+            matchesSale
           );
         });
         setFilteredProperties(filtered);
@@ -191,24 +192,24 @@ export default function SearchResultsPage() {
         {isRent && (
           <>
             <MinRentPriceFilter
-              value={minRentPrice}
-              setValue={setMinRentPrice}
+              minRentPrice={minRentPrice}
+              setMinRentPrice={(value) => setMinRentPrice(parseInt(value))}
             />
             <MaxRentPriceFilter
-              value={maxRentPrice}
-              setValue={setMaxRentPrice}
+              maxRentPrice={maxRentPrice}
+              setMaxRentPrice={(value) => setMaxRentPrice(parseInt(value))}
             />
           </>
         )}
         {isSale && (
           <>
             <MinSalePriceFilter
-              value={minSalePrice}
-              setValue={setMinSalePrice}
+              minSalePrice={minSalePrice}
+              setMinSalePrice={(value) => setMinSalePrice(parseInt(value))}
             />
             <MaxSalePriceFilter
-              value={maxSalePrice}
-              setValue={setMaxSalePrice}
+              maxSalePrice={maxSalePrice}
+              setMaxSalePrice={(value) => setMaxSalePrice(parseInt(value))}
             />
           </>
         )}
