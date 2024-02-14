@@ -1,249 +1,186 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import SearchResults from "../../components/SearchResults/SearchResults.jsx";
-import MinSalePriceFilter from "../../components/Filters/MinSalePriceFilter";
-import MaxSalePriceFilter from "../../components/Filters/MaxSalePriceFilter";
-import MinRentPriceFilter from "../../components/Filters/MinRentPriceFilter";
-import MaxRentPriceFilter from "../../components/Filters/MaxRentPriceFilter";
-import MinBedsFilter from "../../components/Filters/MinBedsFilter";
-import MaxBedsFilter from "../../components/Filters/MaxBedsFilter";
-import PropertyTypeFilter from "../../components/Filters/PropertyTypeFilter";
-import RentFilter from "../../components/Filters/RentFilter";
-import SaleFilter from "../../components/Filters/SaleFilter";
+import axios from "axios";
+import Filters from "../../components/Filters/Filters.jsx";
+import NavBar from "../../components/NavBar/NavBar.jsx";
 
 export default function SearchResultsPage() {
-  // The useLocation hook is used to access the current location object, which contains information about the current URL. Specifically, it's used to retrieve the searchTerm, isRent, and isSale states from the location's state if they were passed through navigation from the Home page
   const location = useLocation();
-  // Check if location.state exists before attempting to access its properties
-  const initialSearchTerm =
-    location.state && location.state.searchTerm !== undefined
-      ? location.state.searchTerm
-      : "";
-  const initialIsRent =
-    location.state && location.state.isRent !== undefined
-      ? location.state.isRent
-      : false;
-  const initialIsSale =
-    location.state && location.state.isSale !== undefined
-      ? location.state.isSale
-      : false;
 
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [searchTerm, setSearchTerm] = useState([location.state.search]);
   const [propertiesArray, setPropertiesArray] = useState([]);
-  const [minSalePrice, setMinSalePrice] = useState("");
-  const [maxSalePrice, setMaxSalePrice] = useState("");
-  const [minRentPrice, setMinRentPrice] = useState("");
-  const [maxRentPrice, setMaxRentPrice] = useState("");
-  const [minBeds, setMinBeds] = useState("");
-  const [maxBeds, setMaxBeds] = useState("");
-  const [propertyType, setPropertyType] = useState("");
-  const [isRent, setIsRent] = useState(initialIsRent);
-  const [isSale, setIsSale] = useState(initialIsSale);
-  const [filteredProperties, setFilteredProperties] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [filteredProperties, setfilteredProperties] = useState([]);
+  const [searchFilters, setSearchFilters] = useState({
+    maxCost: null,
+    minCost: null,
+    PropertyType: null,
+    maxBedrooms: null,
+    minBedrooms: null,
+    maxBathrooms: null,
+    minBathrooms: null,
+  });
+  const [favourties, setFavourites] = useState(
+    JSON.parse(localStorage.getItem("favourites"))
+  );
 
   useEffect(() => {
-    // This is an asynchronous function that fetches property listings from the Zoopla API. It takes a status parameter which can be either "rent" or "sale", and sends a GET request to the API with query parameters that include the search area, page size, radius, and the desired listing status
-    const fetchProperties = async (status) => {
-      try {
-        const response = await axios({
-          method: "GET",
-          url: "https://zoopla.p.rapidapi.com/properties/list",
-          params: {
-            area: searchTerm,
-            page_size: "40",
-            radius: "40",
-            listing_status: status,
-          },
-          headers: {
-            "X-RapidAPI-Key":
-              "837ceef95cmshc8484b8fa7149a0p1c8ca5jsnd0c0dec05e1a",
-            "X-RapidAPI-Host": "zoopla.p.rapidapi.com",
-          },
-        });
-        // Check if response.data.listing exists and if it is an array
-        if (!response.data.listing || !Array.isArray(response.data.listing)) {
-          throw new Error(
-            "Sorry! No listings available in this area. Please search a different area."
-          );
-        }
-        // It maps the returned listings to a simpler structure containing ID, image URL, address, title, cost, number of bedrooms, bathrooms, description, type, and status
-        const properties = response.data.listing.map((listing) => ({
-          id: listing.listing_id,
-          image:
-            listing.images["0"] && listing.images["0"].original
-              ? listing.images["0"].original
-              : "",
-          address: listing.displayable_address,
-          title: listing.title,
-          cost: listing.price,
-          bedrooms: listing.num_bedrooms,
-          bathrooms: listing.num_bathrooms,
-          description: listing.short_description,
-          type: listing.property_type,
-          status: listing.listing_status,
-        }));
-        return properties;
-        // Handle any errors that might occur during the API request. If an error occurs, it is logged to the console
-      } catch (error) {
-        console.error(error);
-        // Update the error state with the error message
-        setErrorMessage(error.message);
-      }
+    filterProperties();
+  }, [searchFilters]);
+
+  useEffect(() => {
+    console.log("Favourites", favourties);
+    localStorage.setItem("favourites", JSON.stringify(favourties));
+  }, [favourties]);
+
+  useEffect(() => {
+    // run API call with search data from homepage
+    const getData = async () => {
+      console.log("Term", location.state.search);
+      await fetchProperties(
+        location.state.search,
+        location.state.listing_status
+      );
     };
-    // This asynchronous function is responsible for calling fetchProperties with the correct status based on the application's state (isRent and isSale). It concatenates the results of both rent and sale listings into a single array, which it then sets as the state of propertiesArray
-    const fetchData = async () => {
-      let results = [];
-      // Determine the status to fetch based on the active filters
-      const statusToFetch = isRent ? "rent" : isSale ? "sale" : "rent";
+    getData();
+  }, []);
 
-      // Fetch properties for the determined status
-      const propertyResults = await fetchProperties(statusToFetch);
+  const parseRawPropertiesData = (propertiesArray) =>
+    //removes unwanted info from fetched data
+    propertiesArray.listing.map((listing) => {
+      return {
+        id: listing.listing_id,
+        address: listing.displayable_address,
+        description: listing.short_description,
+        image: listing.original_image[0],
+        bathrooms: listing.num_bathrooms,
+        bedrooms: listing.num_bedrooms,
+        cost: listing.price,
+      };
+    });
 
-      // Set the results to the fetched properties
-      results = propertyResults;
-
-      setPropertiesArray(results);
+  //API call to fetch properties
+  async function fetchProperties(searchTerm, listing_status) {
+    const options = {
+      method: "GET",
+      url: "https://zoopla.p.rapidapi.com/properties/list",
+      params: {
+        area: searchTerm,
+        page_size: "40",
+        radius: "40",
+        listing_status: listing_status,
+      },
+      headers: {
+        "X-RapidAPI-Key": "6258e18b25mshd96a594dcf7fcb5p1b1fd6jsn955bae6d8f8b",
+        "X-RapidAPI-Host": "zoopla.p.rapidapi.com",
+      },
     };
-    if (searchTerm) {
-      fetchData();
+
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+      //set properties based on data received from API call
+      setPropertiesArray(parseRawPropertiesData(response.data));
+      // initialize properties array that can be updated based on filters
+      setfilteredProperties(parseRawPropertiesData(response.data));
+    } catch (error) {
+      console.error(error);
     }
-  }, [searchTerm, isRent, isSale]); // Re-run the useEffect if any of these values changes
+  }
 
-  const handleSearch = (searchValue) => {
-    setSearchTerm(searchValue);
-    // Reset the error message state to an empty string when a new search is run
-    setErrorMessage("");
-  };
+  function resetFilters() {
+    setSearchFilters(...propertiesArray);
+  }
+  async function handleSearch(target) {
+    //update search term state
+    setSearchTerm(target.target.value);
 
-  useEffect(() => {
-    const applyFilters = () => {
-      // Create a new array called filtered by filtering propertiesArray. Use .filter to go through each element in propertiesArray and keep only the elements for which the call back function returns true
-      if (propertiesArray && propertiesArray.length > 0) {
-        const filtered = propertiesArray.filter((property) => {
-          // sets the priceFilter to the cost of the current property
-          const priceFilter = property.cost;
-          // Price filter logic
-          const minPriceFilter =
-            property.status === "rent" ? minRentPrice : minSalePrice;
-          const maxPriceFilter =
-            property.status === "rent" ? maxRentPrice : maxSalePrice;
-          const matchesMinPrice =
-            minPriceFilter === "" || priceFilter >= minPriceFilter;
-          const matchesMaxPrice =
-            maxPriceFilter === "" || priceFilter <= maxPriceFilter;
-          // Bedrooms filter logic
-          const matchesMinBeds = minBeds === "" || property.bedrooms >= minBeds;
-          const matchesMaxBeds = maxBeds === "" || property.bedrooms <= maxBeds;
-          // Property type filter logic
-          const matchesPropertyType =
-            propertyType === "" || property.type === propertyType;
-          // Listing status filter logic
-          const matchesRent = !isRent || property.status === "rent";
-          const matchesSale = !isSale || property.status === "sale";
+    if (target.key === "Enter") {
+      //call API and get data
+      await fetchProperties(searchTerm, "rent");
+    }
+  }
 
-          return (
-            matchesMinPrice &&
-            matchesMaxPrice &&
-            matchesMinBeds &&
-            matchesMaxBeds &&
-            matchesPropertyType &&
-            matchesRent &&
-            matchesSale
-          );
-        });
-        setFilteredProperties(filtered);
-      } else {
-        setFilteredProperties([]);
+  function testProp(prop, key, isMax) {
+    // tests the property against a specific key and value in the filters array
+    // console.log(
+    //   prop[key.substring(3).toLowerCase()],
+    //   key,
+    //   searchFilters[key],
+    //   isMax
+    // );
+    //min/max is removed from the start of the key name and it is changed to lower case to match the keys of the property object
+    return isMax
+      ? parseInt(prop[key.substring(3).toLowerCase()]) <=
+          parseInt(searchFilters[key])
+      : parseInt(prop[key.substring(3).toLowerCase()]) >=
+          parseInt(searchFilters[key]);
+  }
+
+  function filterProperties() {
+    const filteredArr = [];
+
+    //loops through all properties
+    for (const prop of propertiesArray) {
+      //set flag to test if any test fails
+      let addToFilterProps = true;
+      for (const filter in searchFilters) {
+        // loop only runs on filters that have been set (not equal to null)
+        if (searchFilters[filter] !== null) {
+          addToFilterProps = filter.includes("max")
+            ? testProp(prop, filter, true)
+            : testProp(prop, filter, false);
+          //if the test ever gives a negative result, we break the loop and do not add the property to the filtered array
+          if (addToFilterProps === false) {
+            break;
+          }
+        }
       }
-    };
-    applyFilters();
-  }, [
-    minSalePrice,
-    maxSalePrice,
-    minRentPrice,
-    maxRentPrice,
-    minBeds,
-    maxBeds,
-    propertyType,
-    isRent,
-    isSale,
-    propertiesArray,
-  ]); // Re-run the useEffect if any of these values changes
+      // add property to filter if it has passed all tests
+      if (addToFilterProps) {
+        filteredArr.push(prop);
+      }
+    }
+    setfilteredProperties(filteredArr);
+  }
 
-  // Reset the value of the filters to their original state
-  function handleReset() {
-    setMinSalePrice("");
-    setMaxSalePrice("");
-    setMinBeds("");
-    setMaxBeds("");
-    setPropertyType("");
-    setIsRent(false);
-    setIsSale(false);
-    setFilteredProperties(propertiesArray);
+  function handleFilterSelect(target) {
+    const name = target.target.name;
+    const value = target.target.value;
+    setSearchFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+    console.log(searchFilters);
+  }
+
+  function handleFavouriteClick(property) {
+    ///check if item already in favourites
+    const currentFavourites = JSON.parse(localStorage.getItem("favourites"));
+    let propertySavedAlready = false;
+    //loop over each element in the array
+    for (const favourite of currentFavourites) {
+      propertySavedAlready = parseInt(favourite.id) == property.id;
+    }
+    if (!propertySavedAlready) {
+      setFavourites(() => [...currentFavourites, property]);
+    } else {
+      alert("Property saved already");
+    }
   }
 
   return (
     <>
-      <div className="flex flex-wrap gap-4 p-4">
-        <SearchInput onInputChange={handleSearch} />
-        {isRent && (
-          <>
-            <MinRentPriceFilter
-              minRentPrice={minRentPrice}
-              setMinRentPrice={(value) => setMinRentPrice(parseInt(value))}
-            />
-            <MaxRentPriceFilter
-              maxRentPrice={maxRentPrice}
-              setMaxRentPrice={(value) => setMaxRentPrice(parseInt(value))}
-            />
-          </>
-        )}
-        {isSale && (
-          <>
-            <MinSalePriceFilter
-              minSalePrice={minSalePrice}
-              setMinSalePrice={(value) => setMinSalePrice(parseInt(value))}
-            />
-            <MaxSalePriceFilter
-              maxSalePrice={maxSalePrice}
-              setMaxSalePrice={(value) => setMaxSalePrice(parseInt(value))}
-            />
-          </>
-        )}
-        <MinBedsFilter
-          minBeds={minBeds}
-          setMinBeds={(value) => setMinBeds(parseInt(value))}
-        />
+      <NavBar />
+      <h1>{searchTerm} properties</h1>
 
-        <MaxBedsFilter
-          maxBeds={maxBeds}
-          setMaxBeds={(value) => setMaxBeds(parseInt(value))}
-        />
-
-        <PropertyTypeFilter
-          propertyTypes={propertyType}
-          setPropertyType={(value) => setPropertyType(value)}
-        />
-
-        <RentFilter isRent={isRent} setIsRent={setIsRent} />
-        <SaleFilter isSale={isSale} setIsSale={setIsSale} />
-
-        <button onClick={handleReset}>Reset Filters</button>
-      </div>
-      {/* Render error conditionally. If error is truthy then render error */}
-      {errorMessage && <div className="error">{errorMessage}</div>}
-      {/*Check if filteredProperties has a length greater than zero before using it. If filteredProperties is empty, we fall back to propertiesArray.Before using propertiesArray, we check to ensure it's an array and has a length greater than zero.If neither filteredProperties nor propertiesArray meet these conditions, we default to an empty array. */}
+      <Filters onSelect={handleFilterSelect} />
+      {/* <Button onClick=  >Reset filters</Button> */}
+      <SearchInput onInputChange={handleSearch} />
       <SearchResults
-        properties={
-          filteredProperties.length > 0
-            ? filteredProperties
-            : Array.isArray(propertiesArray) && propertiesArray.length > 0
-            ? propertiesArray
-            : []
-        }
+        properties={filteredProperties}
+        handleFavouriteClick={handleFavouriteClick}
       />
     </>
   );
