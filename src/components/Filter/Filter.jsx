@@ -15,7 +15,7 @@ export default function Filter({ name, options, handleSelect }) {
         onChange={handleSelect}
       >
         {options.map((opt) => (
-          <option key={opt} value={opt}>
+          <option key={opt.id} value={opt}>
             {opt}
           </option>
         ))}
