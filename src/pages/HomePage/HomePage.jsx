@@ -1,9 +1,11 @@
 import JumboTron from "../../components/JumboTron/JumboTron";
 import ArticleCard from "../../components/ArticleCard/ArticleCard";
+import NavBar from "../../components/NavBar/NavBar";
 
 export default function HomePage() {
   return (
     <>
+      <NavBar />
       <JumboTron />
       <div className="flex flex-col text-center font-semibold mt-3 text-2xl">
         <h2>Helpful Articles</h2>
