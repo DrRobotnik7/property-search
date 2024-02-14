@@ -13,8 +13,8 @@ export default function NavBar() {
           <div className="flex mx-auto px-2 sm:px-6 lg:px-8 h-12 bg-primary sticky">
             <div className="flex h-auto items-center">
               <div className="flex">
-                  <span className="space-x-12 font-bold text-tertiary">ABODE</span>
-                <div className="ml-12">
+                  <img className="h-20 w-20"src="./images/Bode.png" alt="ABODE" />
+                <div className="ml-12 mt-7">
                   <div className="space-x-12 text-tertiary">
                     {navigation.map((item) => (
                       <a
