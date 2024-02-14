@@ -4,13 +4,15 @@ export default function SearchResults({ properties }) {
     <>
       {properties.map((property) => (
         <PropertyCard
-          key={property.address}
+          key={property.id}
           imgUrl={property.image}
           propertyName={property.address}
+          title={property.title}
           cost={property.cost}
           bedrooms={property.bedrooms}
           bathrooms={property.bathrooms}
           description={property.description}
+          status={property.status}
         />
       ))}
     </>
