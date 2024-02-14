@@ -1,9 +1,11 @@
-import JumboTron from '../../components/JumboTron/JumboTron'
-import ArticleCard from "../../components/ArticleCard/ArticleCard"
+import JumboTron from "../../components/JumboTron/JumboTron";
+import ArticleCard from "../../components/ArticleCard/ArticleCard";
+import NavBar from "../../components/NavBar/NavBar";
 
 export default function HomePage() {
   return (
     <>
+      <NavBar />
       <JumboTron />
 
       <h2>Helpful Articles</h2>
@@ -27,6 +29,7 @@ export default function HomePage() {
       alt = "Family Moving House"
       paragraph = "We studied 600,000 property listings to reveal the top 10 features sought by buyers and renters, offering insights into what matters most in their home search."
       />
+
       </div>
     </>
   );
