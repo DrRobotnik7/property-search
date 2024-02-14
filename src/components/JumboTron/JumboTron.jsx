@@ -1,27 +1,45 @@
+import { useState } from "react";
 import SearchInput from "../SearchInput/SearchInput";
 import background from "../../assets/images/BackgroundImage.jpg";
-import RentFilter from "../Filters/RentFilter";
-import SaleFilter from "../Filters/SaleFilter";
+import { useNavigate } from "react-router-dom";
+import Filter from "../Filter/Filter";
 
+export default function JumboTron() {
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [listingStatus, setListingStatus] = useState("rent");
 
-const JumboTron = ({ onInputChange, isRent, setIsRent, isSale, setIsSale }) => {
+  function handleSearch(target) {
+    setSearchTerm(target.target.value);
+
+    if (target.key === "Enter") {
+      //call API and get data
+      navigate("/results", {
+        state: { search: searchTerm, listing_status: listingStatus },
+      });
+    }
+  }
+
+  function handleStatusSelect(target) {
+    setListingStatus(target.target.value);
+    console.log(listingStatus);
+  }
+
   return (
-    <div
-      className="bg-cover bg-center h-96 flex items-center justify-center relative"
-      style={{
-        backgroundImage: `url(${background})`,
-      }}
-    >
-      {/* SearchInput component for entering search terms, with a prop to handle changes */}
-      <SearchInput onInputChange={onInputChange} />
-      <div>
-        {/* RentFilter component enables and displays rent option */}
-        <RentFilter isRent={isRent} setIsRent={setIsRent} />
-        {/* SaleFilter component enables and displays sale option */}
-        <SaleFilter isSale={isSale} setIsSale={setIsSale} />
+    <>
+      <div
+        className="bg-cover bg-center h-96 flex items-center justify-center relative"
+        style={{
+          backgroundImage: `url(${background})`,
+        }}
+      >
+        <SearchInput onInputChange={handleSearch} />
       </div>
-    </div>
+      <Filter
+        name="Listing Status"
+        options={["rent", "sale"]}
+        handleSelect={handleStatusSelect}
+      />
+    </>
   );
-};
-
-export default JumboTron;
+}

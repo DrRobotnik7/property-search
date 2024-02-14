@@ -2,7 +2,7 @@ import "../../index.css";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
-  { name: "Favourites", href: "#", current: false },
+  { name: "Favourites", href: "/favourites", current: false },
   { name: "Get in Touch", href: "/contact", current: false },
 ];
 

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faBed } from "@fortawesome/free-solid-svg-icons";
 import { faShower } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 import "./PropertyCard.css";
 
 export default function PropertyCard({
@@ -15,11 +16,30 @@ export default function PropertyCard({
   bathrooms,
   description,
   status,
+  onIconClick,
 }) {
   const parsedDescription = parse(description);
+
+  const [isFavourite, setIsFavourite] = useState(false);
+  function handleFavouriteClick() {
+    const propObj = {
+      id: id,
+      image: imgUrl,
+      propertyName: propertyName,
+      cost: cost,
+      bedrooms: bedrooms,
+      bathrooms: bathrooms,
+      description: parsedDescription,
+    };
+    setIsFavourite((isFavourite) => !isFavourite);
+    onIconClick(propObj);
+  }
   return (
     <>
-      <div className="max-w-md mx-auto mt-6 bg-white rounded-xl shadow-md overflow-hidden md:max-w-4xl xl:max-w-6xl">
+      <div
+        key={id}
+        className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-4xl xl:max-w-6xl"
+      >
         <div className="md:flex">
           <div className="md:shrink-0">
             <img
@@ -57,7 +77,10 @@ export default function PropertyCard({
               <button className="mr-2 py-2 px-4 rounded-md bg-secondary text-primary">
                 Learn More
               </button>
-              <span className="text-2xl">
+              <span
+                className={"text-2xl" + (isFavourite && "favourite")}
+                onClick={handleFavouriteClick}
+              >
                 {<FontAwesomeIcon icon={faHeart} />}
               </span>
             </div>
