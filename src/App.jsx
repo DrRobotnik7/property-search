@@ -8,9 +8,9 @@ import {
 } from "react-router-dom";
 import NavBar from "../src/components/NavBar/NavBar";
 import Footer from "../src/components/Footer/Footer";
-import HomePage from "./pages/HomePage";
-import ContactPage from "./pages/ContactPage";
-import SearchResultsPage from "./pages/SearchResultsPage";
+import HomePage from "./pages/HomePage/HomePage";
+import ContactPage from "./pages/ContactPage/ContactPage";
+import SearchResultsPage from "./pages/SearchResultsPage/SearchResultsPage";
 
 const routeDefinitions = createRoutesFromElements(
   <Route>
