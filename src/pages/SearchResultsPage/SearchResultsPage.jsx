@@ -21,14 +21,12 @@ export default function SearchResultsPage() {
   });
 
   function handleFilterSelect(target) {
-    setSearchFilters((currentFilters) => {
-      const name = target.target.name;
-      const value = target.target.value;
-
-      const newFilters = currentFilters;
-      newFilters[0][name] = value;
-      return [newFilters];
-    });
+    const name = target.target.name;
+    const value = target.target.value;
+    setSearchFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
     console.log(searchFilters);
   }
 
@@ -61,18 +59,27 @@ export default function SearchResultsPage() {
   }
   const [searchTerm, setSearchTerm] = useState([location.state.search]);
   const [propertiesArray, setPropertiesArray] = useState([]);
-  const [searchFilters, setSearchFilters] = useState([
-    {
-      maxCost: "",
-      minCost: "",
-      PropertyType: "",
-    },
-  ]);
+  const [searchFilters, setSearchFilters] = useState({
+    maxCost: null,
+    minCost: null,
+    PropertyType: null,
+    bedrooms: null,
+  });
   return (
     <>
       <h1>Hello Search Results Page</h1>;<h2>{searchTerm}</h2>
       <Filter
         name={"Max cost"}
+        options={[300000, 50000, 600000, 700000]}
+        handleSelect={handleFilterSelect}
+      />
+      <Filter
+        name={"bedrooms"}
+        options={[1, 2, 3, 4]}
+        handleSelect={handleFilterSelect}
+      />
+      <Filter
+        name={"Min cost"}
         options={[300000, 50000, 600000, 700000]}
         handleSelect={handleFilterSelect}
       />
