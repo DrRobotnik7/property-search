@@ -20,7 +20,7 @@ export default function SearchInput({ onInputChange }) {
         type="text"
         required
         size="10"
-        placeholder="Search area"
+        placeholder="Where do you want to live?"
         width={"200px"}
         value={inputValue} // Control the input with state
         onChange={handleInputChange} // Update state on input change

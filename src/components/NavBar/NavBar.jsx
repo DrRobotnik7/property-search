@@ -9,14 +9,12 @@ const navigation = [
 export default function NavBar() {
   return (
          <>
-          <div className="mx-auto max-w-10xl px-2 sm:px-6 lg:px-8 h-12 bg-primary sticky">
-            <div className="relative flex h-auto items-center justify-between">
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start text-color-tertiary">
-              <div className="flex flex-shrink-0">
-                  <span className="items-start">COMPANY</span>
-                </div>
-                <div className="sm:ml-12 sm:block">
-                  <div className="flex space-x-24 text-tertiary items-center">
+          <div className="flex mx-auto px-2 sm:px-6 lg:px-8 h-12 bg-primary sticky">
+            <div className="flex h-auto items-center">
+              <div className="flex">
+                  <span className="space-x-12 font-bold text-tertiary">ABODE</span>
+                <div className="ml-12">
+                  <div className="space-x-12 text-tertiary">
                     {navigation.map((item) => (
                       <a
                         key={item.name}
