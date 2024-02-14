@@ -19,18 +19,23 @@ URL: https://abode-property-search.netlify.app/
 
 ## Usage
 
-- At the top of the home page there is an input box, type the town / city in which you would like to search for a property and press "Enter" on your keyboard.
+- At the top of the home page there is an input box, type the town / city in which you would like to search for a property. Select "sale" or "rent" and then press "Enter" on your keyboard. If no selection is made, rent is the default parameter.
 - You will be taken to a search results page that shows the current listings. You can filter the results further using the drop-down filters at the top of the page.
-- Click on the "Learn More" button to be navigated to the listing on Zoopla's website.
-- If you would like to find out more about the property or our application, contact us using the Contact Us page.
+- To keep track of your favourite listings click on the heart icon at the bottom of the property card. This will be saved to your favourites, which can be navigated to via the navigation bar.
+- To express your interest in a property click on the "Contact Us" button at the bottom of the property card and you will be taken to the contact page.
 
 ![Abode Property Search Screenshot](./src/assets/images/react-portfolio-screenshot.png)
 
 ## Credits
 
-I would like to acknowledge my peers in Team Abode, we haven't all worked together as a team during this bootcamp and it has been a pleasure to work.
+Contributors towards this project:
 
-I would also like to acknowledge the developers that created React, Tailwind and the Zoopla API used on this project.
+[Naike Bindella](https://github.com/Naike-B)
+[Jefferson Daley](https://github.com/Whefert)
+[Hillary Mason](https://github.com/HillaryM17)
+[Jack Johnson](https://github.com/DrRobotnik7)
+
+I would also like to acknowledge the developers that created React, Tailwind, HTML React Parser, Node.js and the Zoopla API https://rapidapi.com/apidojo/api/zoopla.
 
 Finally I used https://getform.io/ to generate my form endpoint so I can store and view messages submitted by users on my Contact page.
 
