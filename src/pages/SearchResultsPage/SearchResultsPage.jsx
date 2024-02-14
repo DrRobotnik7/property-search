@@ -36,7 +36,7 @@ export default function SearchResultsPage() {
   useEffect(() => {
     // run API call with search data from homepage
     const getData = async () => {
-      await fetchPropoerties(
+      await fetchProperties(
         location.state.search,
         location.state.listing_status
       );
@@ -59,7 +59,7 @@ export default function SearchResultsPage() {
     });
 
   //API call to fetch properties
-  async function fetchPropoerties(searchTerm, listing_status) {
+  async function fetchProperties(searchTerm, listing_status) {
     const options = {
       method: "GET",
       url: "https://zoopla.p.rapidapi.com/properties/list",
@@ -70,7 +70,7 @@ export default function SearchResultsPage() {
         listing_status: listing_status,
       },
       headers: {
-        "X-RapidAPI-Key": "6c2d7c4be3msh81ec7edea20105ep183ed2jsn54fa59ee3d15",
+        "X-RapidAPI-Key": "6258e18b25mshd96a594dcf7fcb5p1b1fd6jsn955bae6d8f8b",
         "X-RapidAPI-Host": "zoopla.p.rapidapi.com",
       },
     };
@@ -95,7 +95,7 @@ export default function SearchResultsPage() {
 
     if (target.key === "Enter") {
       //call API and get data
-      await fetchPropoerties(searchTerm, "rent");
+      await fetchProperties(searchTerm, "rent");
     }
   }
 
