@@ -11,7 +11,7 @@ export default function JumboTron() {
 
   function handleSearch(target) {
     setSearchTerm(target.target.value);
-
+    console.log(searchTerm);
     if (target.key === "Enter") {
       //call API and get data
       navigate("/results", {
@@ -34,12 +34,12 @@ export default function JumboTron() {
         }}
       >
         <SearchInput onInputChange={handleSearch} />
+        <Filter
+          name="Listing Status"
+          options={["rent", "sale"]}
+          handleSelect={handleStatusSelect}
+        />
       </div>
-      <Filter
-        name="Listing Status"
-        options={["rent", "sale"]}
-        handleSelect={handleStatusSelect}
-      />
     </>
   );
 }

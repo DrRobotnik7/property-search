@@ -4,6 +4,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faBed } from "@fortawesome/free-solid-svg-icons";
 import { faShower } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./PropertyCard.css";
 
 export default function PropertyCard({
@@ -18,6 +19,7 @@ export default function PropertyCard({
   status,
   onIconClick,
 }) {
+  const navigate = useNavigate();
   const parsedDescription = parse(description);
 
   const [isFavourite, setIsFavourite] = useState(false);
@@ -75,7 +77,9 @@ export default function PropertyCard({
             </div>
             <div className="flex mt-6 space-x-4 items-center">
               <button className="mr-2 py-2 px-4 rounded-md bg-secondary text-primary">
-                Learn More
+                <Link to={{ pathname: "/contact", state: { id } }}>
+                  Get In Touch
+                </Link>
               </button>
               <span
                 className={"text-2xl" + (isFavourite && "favourite")}

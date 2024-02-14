@@ -1,3 +1,4 @@
+import NavBar from "../../components/NavBar/NavBar";
 import SearchResults from "../../components/SearchResults/SearchResults";
 import { useState, useEffect } from "react";
 
@@ -20,6 +21,7 @@ export default function Favourites() {
 
   return (
     <>
+      <NavBar />
       <h2>Favourites</h2>
       <SearchResults
         properties={favourties}

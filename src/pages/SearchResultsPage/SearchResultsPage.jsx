@@ -4,6 +4,7 @@ import SearchInput from "../../components/SearchInput/SearchInput";
 import SearchResults from "../../components/SearchResults/SearchResults.jsx";
 import axios from "axios";
 import Filters from "../../components/Filters/Filters.jsx";
+import NavBar from "../../components/NavBar/NavBar.jsx";
 
 export default function SearchResultsPage() {
   const location = useLocation();
@@ -36,6 +37,7 @@ export default function SearchResultsPage() {
   useEffect(() => {
     // run API call with search data from homepage
     const getData = async () => {
+      console.log("Term", location.state.search);
       await fetchProperties(
         location.state.search,
         location.state.listing_status
@@ -77,6 +79,7 @@ export default function SearchResultsPage() {
 
     try {
       const response = await axios.request(options);
+      console.log(response.data);
       //set properties based on data received from API call
       setPropertiesArray(parseRawPropertiesData(response.data));
       // initialize properties array that can be updated based on filters
@@ -169,6 +172,7 @@ export default function SearchResultsPage() {
 
   return (
     <>
+      <NavBar />
       <h1>{searchTerm} properties</h1>
 
       <Filters onSelect={handleFilterSelect} />
