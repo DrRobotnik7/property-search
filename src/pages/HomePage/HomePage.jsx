@@ -1,6 +1,5 @@
 import JumboTron from '../../components/JumboTron/JumboTron'
 import ArticleCard from "../../components/ArticleCard/ArticleCard"
-import "../HomePage/HomePage.css"
 
 export default function HomePage() {
   return (
