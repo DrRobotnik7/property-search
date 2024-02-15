@@ -22,9 +22,9 @@ URL: https://abode-property-search.netlify.app/
 - At the top of the home page there is an input box, type the town / city in which you would like to search for a property. Select "sale" or "rent" and then press "Enter" on your keyboard. If no selection is made, rent is the default parameter.
 - You will be taken to a search results page that shows the current listings. You can filter the results further using the drop-down filters at the top of the page.
 - To keep track of your favourite listings click on the heart icon at the bottom of the property card. This will be saved to your favourites, which can be navigated to via the navigation bar.
-- To express your interest in a property click on the "Contact Us" button at the bottom of the property card and you will be taken to the contact page.
+- To express your interest in a property click on the "Get In Touch" button at the bottom of the property card and you will be taken to the contact page. Submit your query and we will respond ASAP!
 
-![Abode Property Search Screenshot](./src/assets/images/react-portfolio-screenshot.png)
+![Abode Property Search Screenshot](./src/assets/images/abode-screenshot.png)
 
 ## Credits
 
