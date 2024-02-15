@@ -33,12 +33,16 @@ export default function JumboTron() {
           backgroundImage: `url(${background})`,
         }}
       >
-        <SearchInput onInputChange={handleSearch} />
-        <Filter
-          name="Listing Status"
-          options={["rent", "sale"]}
-          handleSelect={handleStatusSelect}
-        />
+        <div className="flex flex-col">
+          <SearchInput onInputChange={handleSearch} width={"w-96"} />
+          <div className="mt-5 items-center justify-center text-center">
+            <Filter
+              name="Listing Status"
+              options={["rent", "sale"]}
+              handleSelect={handleStatusSelect}
+            />
+          </div>
+        </div>
       </div>
     </>
   );

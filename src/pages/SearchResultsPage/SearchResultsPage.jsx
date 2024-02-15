@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import SearchResults from "../../components/SearchResults/SearchResults.jsx";
 import axios from "axios";
 import Filters from "../../components/Filters/Filters.jsx";
 import NavBar from "../../components/NavBar/NavBar.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
+import Filter from "../../components/Filter/Filter.jsx";
+import Heading from "../../components/Headings/Heading.jsx";
 
 export default function SearchResultsPage() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState([location.state.search]);
   const [propertiesArray, setPropertiesArray] = useState([]);
@@ -22,32 +26,33 @@ export default function SearchResultsPage() {
     minBathrooms: null,
   });
   const [favourites, setFavourites] = useState(() => {
-    console.log("Local storage", localStorage.getItem("favourites"));
     return JSON.parse(localStorage.getItem("favourites"));
-    // if (JSON.parse(local_storage === null || local_storage.length <= 0)) {
-    //   return local_storage;
-    // } else {
-    //   return local_storage;
-    // }
   });
+  const [listingStatus, setListingStatus] = useState(
+    location.state.listing_status
+  );
 
   useEffect(() => {
     filterProperties();
   }, [searchFilters]);
 
   useEffect(() => {
-    console.log("Favourites", favourites);
-    localStorage.setItem("favourites", JSON.stringify(favourites));
+    if (favourites) {
+      const itemToSet = [...favourites];
+      localStorage.setItem("favourites", JSON.stringify(itemToSet));
+    }
   }, [favourites]);
 
   useEffect(() => {
     // run API call with search data from homepage
     const getData = async () => {
-      console.log("Term", location.state.search);
-      await fetchProperties(
-        location.state.search,
-        location.state.listing_status
-      );
+      if (location.state.search && location.state.listing_status) {
+        console.log("Term", location.state.search);
+        await fetchProperties(
+          location.state.search,
+          location.state.listing_status
+        );
+      }
     };
     getData();
   }, []);
@@ -57,6 +62,7 @@ export default function SearchResultsPage() {
     propertiesArray.listing.map((listing) => {
       return {
         id: listing.listing_id,
+        listing_status: listing.listing_status,
         address: listing.displayable_address,
         description: listing.short_description,
         image: listing.original_image[0],
@@ -68,6 +74,7 @@ export default function SearchResultsPage() {
 
   //API call to fetch properties
   async function fetchProperties(searchTerm, listing_status) {
+    console.log("Search term", searchTerm);
     const options = {
       method: "GET",
       url: "https://zoopla.p.rapidapi.com/properties/list",
@@ -78,7 +85,7 @@ export default function SearchResultsPage() {
         listing_status: listing_status,
       },
       headers: {
-        "X-RapidAPI-Key": "6258e18b25mshd96a594dcf7fcb5p1b1fd6jsn955bae6d8f8b",
+        "X-RapidAPI-Key": "e0d751f295msh79bfb1278864fa2p183f00jsnf9fc7f48a870",
         "X-RapidAPI-Host": "zoopla.p.rapidapi.com",
       },
     };
@@ -91,6 +98,7 @@ export default function SearchResultsPage() {
       // initialize properties array that can be updated based on filters
       setfilteredProperties(parseRawPropertiesData(response.data));
     } catch (error) {
+      alert("Unknown location entered. Please try again");
       console.error(error);
     }
   }
@@ -104,7 +112,8 @@ export default function SearchResultsPage() {
 
     if (target.key === "Enter") {
       //call API and get data
-      await fetchProperties(searchTerm, "rent");
+      window.history.replaceState({}, "");
+      await fetchProperties(searchTerm, listingStatus);
     }
   }
 
@@ -177,18 +186,38 @@ export default function SearchResultsPage() {
     }
   }
 
+  function handleListingTypeChange(target) {
+    console.log(target.target.value);
+  }
+
   return (
     <>
       <NavBar />
-      <h1>{searchTerm} properties</h1>
-
-      <Filters onSelect={handleFilterSelect} />
-      {/* <Button onClick=  >Reset filters</Button> */}
-      <SearchInput onInputChange={handleSearch} />
-      <SearchResults
-        properties={filteredProperties}
-        handleFavouriteClick={handleFavouriteClick}
-      />
+      <div className="text-center">
+        <Heading> {searchTerm} Properties</Heading>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 mb-3">
+        <div className="flex flex-col text-center">
+          <h3>Search Other Properties</h3>
+          <SearchInput onInputChange={handleSearch} width={"w-50"} />
+          <Filter
+            name={"Rent"}
+            options={["rent", "sale"]}
+            handleSelect={handleListingTypeChange}
+          />
+        </div>
+        <div className="col-span-3">
+          <Filters className="" onSelect={handleFilterSelect} />
+        </div>
+        {/* <Button onClick=  >Reset filters</Button> */}
+      </div>
+      <div className="md:mb-8">
+        <SearchResults
+          properties={filteredProperties}
+          handleFavouriteClick={handleFavouriteClick}
+        />
+      </div>
+      <Footer></Footer>
     </>
   );
 }
