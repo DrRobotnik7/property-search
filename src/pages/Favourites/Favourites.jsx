@@ -2,13 +2,17 @@ import NavBar from "../../components/NavBar/NavBar";
 import SearchResults from "../../components/SearchResults/SearchResults";
 import { useState, useEffect } from "react";
 import Footer from "../../components/Footer/Footer";
+import Heading from "../../components/Headings/Heading";
 export default function Favourites() {
   const [favourties, setFavourites] = useState(() => {
     return JSON.parse(localStorage.getItem("favourites"));
   });
 
   useEffect(() => {
-    localStorage.setItem("favourites", JSON.stringify(favourties));
+    if (favourties) {
+      const itemToSet = [...favourties];
+      localStorage.setItem("favourites", JSON.stringify(itemToSet));
+    }
   }, [favourties]);
 
   function handleFavouriteDeselect(property) {
@@ -22,17 +26,18 @@ export default function Favourites() {
   return (
     <>
       <NavBar />
-      <h2>Favourites</h2>
+      <div className="m-8">
+        <Heading>Favourites</Heading>
 
-      {favourties !== null ? (
-        <SearchResults
-          properties={favourties}
-          handleFavouriteClick={handleFavouriteDeselect}
-        />
-      ) : (
-        <p>No favourties to show</p>
-      )}
-
+        {favourties !== null ? (
+          <SearchResults
+            properties={favourties}
+            handleFavouriteClick={handleFavouriteDeselect}
+          />
+        ) : (
+          <p>No favourites to show</p>
+        )}
+      </div>
       <Footer />
     </>
   );
