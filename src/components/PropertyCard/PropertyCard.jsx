@@ -59,8 +59,9 @@ export default function PropertyCard({
             </p>
             <div className="flex flex-row items-center space-x-10">
               <div className="flex flex-row items-center space-x-10">
-                {status === "rent" && <p>£{cost} per week</p>}
-                {status === "sale" && <p>£{cost}</p>}
+                <p>£{cost}</p>
+                {/* {status === "rent" && <p>£{cost} per week</p>}
+                {status === "sale" && <p>£{cost}</p>} */}
               </div>
 
               <span className="space-x-4">

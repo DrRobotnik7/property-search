@@ -1,11 +1,11 @@
 import NavBar from "../../components/NavBar/NavBar";
 import SearchResults from "../../components/SearchResults/SearchResults";
 import { useState, useEffect } from "react";
-
+import Footer from "../../components/Footer/Footer";
 export default function Favourites() {
-  const [favourties, setFavourites] = useState(
-    JSON.parse(localStorage.getItem("favourites"))
-  );
+  const [favourties, setFavourites] = useState(() => {
+    return JSON.parse(localStorage.getItem("favourites"));
+  });
 
   useEffect(() => {
     localStorage.setItem("favourites", JSON.stringify(favourties));
@@ -23,10 +23,17 @@ export default function Favourites() {
     <>
       <NavBar />
       <h2>Favourites</h2>
-      <SearchResults
-        properties={favourties}
-        handleFavouriteClick={handleFavouriteDeselect}
-      />
+
+      {favourties !== null ? (
+        <SearchResults
+          properties={favourties}
+          handleFavouriteClick={handleFavouriteDeselect}
+        />
+      ) : (
+        <p>No favourties to show</p>
+      )}
+
+      <Footer />
     </>
   );
 }

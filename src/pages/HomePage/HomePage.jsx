@@ -1,6 +1,7 @@
 import JumboTron from "../../components/JumboTron/JumboTron";
 import ArticleCard from "../../components/ArticleCard/ArticleCard";
 import NavBar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer/Footer";
 
 export default function HomePage() {
   return (
@@ -10,7 +11,7 @@ export default function HomePage() {
       <div className="flex flex-col text-center font-semibold mt-3 text-2xl">
         <h2>Helpful Articles</h2>
       </div>
-      <div className="flex flex-col justify-center items-center lg:flex-row ">
+      <div className="flex flex-col justify-center items-center lg:flex-row mb-10">
         <ArticleCard
           path="https://www.moneyhelper.org.uk/en/homes/buying-a-home/mortgage-calculator"
           image="./images/ArticleImg1.jpg"
@@ -30,6 +31,7 @@ export default function HomePage() {
           paragraph="We studied 600,000 property listings to reveal the top 10 features sought by buyers and renters, offering insights into what matters."
         />
       </div>
+      <Footer />
     </>
   );
 }

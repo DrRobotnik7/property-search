@@ -12836,3 +12836,4 @@ export const rentRates = [
   9500,
   10000,
 ];
+
