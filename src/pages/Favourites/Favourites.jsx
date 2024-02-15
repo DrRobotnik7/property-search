@@ -30,9 +30,10 @@ export default function Favourites() {
           handleFavouriteClick={handleFavouriteDeselect}
         />
       ) : (
-        <p>No favourties to show</p>
+        <div className="flex items-center justify-center h-screen">
+          <h3>No favourties to show</h3>
+        </div>
       )}
-
       <Footer />
     </>
   );
