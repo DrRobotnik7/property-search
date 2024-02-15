@@ -1,4 +1,3 @@
-import "./App.css";
 import "./index.css";
 import {
   createBrowserRouter,
@@ -6,7 +5,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Footer from "../src/components/Footer/Footer";
 import HomePage from "./pages/HomePage/HomePage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import SearchResultsPage from "./pages/SearchResultsPage/SearchResultsPage";
