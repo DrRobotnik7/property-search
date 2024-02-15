@@ -8,6 +8,7 @@ import NavBar from "../../components/NavBar/NavBar.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import Filter from "../../components/Filter/Filter.jsx";
 import Heading from "../../components/Headings/Heading.jsx";
+import { saleRates, rentRates } from "../../data.js";
 
 export default function SearchResultsPage() {
   const location = useLocation();
@@ -188,6 +189,7 @@ export default function SearchResultsPage() {
 
   function handleListingTypeChange(target) {
     console.log(target.target.value);
+    setListingStatus(target.target.value);
   }
 
   return (
