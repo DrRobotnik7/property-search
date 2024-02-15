@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faBed } from "@fortawesome/free-solid-svg-icons";
 import { faShower } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./PropertyCard.css";
 
 export default function PropertyCard({
@@ -16,31 +15,31 @@ export default function PropertyCard({
   bedrooms,
   bathrooms,
   description,
-  status,
+  listing_status,
   onIconClick,
 }) {
-  const navigate = useNavigate();
   const parsedDescription = parse(description);
 
-  const [isFavourite, setIsFavourite] = useState(false);
   function handleFavouriteClick() {
     const propObj = {
       id: id,
       image: imgUrl,
+      title: title,
       propertyName: propertyName,
+      listing_status: listing_status,
       cost: cost,
       bedrooms: bedrooms,
       bathrooms: bathrooms,
       description: parsedDescription,
     };
-    setIsFavourite((isFavourite) => !isFavourite);
+
     onIconClick(propObj);
   }
   return (
     <>
       <div
         key={id}
-        className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-4xl xl:max-w-6xl"
+        className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-4xl xl:max-w-6xl mb-3"
       >
         <div className="md:flex">
           <div className="md:shrink-0">
@@ -59,9 +58,11 @@ export default function PropertyCard({
             </p>
             <div className="flex flex-row items-center space-x-10">
               <div className="flex flex-row items-center space-x-10">
-                <p>£{cost}</p>
-                {/* {status === "rent" && <p>£{cost} per week</p>}
-                {status === "sale" && <p>£{cost}</p>} */}
+                {listing_status === "rent" ? (
+                  <p>£{cost} per week</p>
+                ) : (
+                  <p>£{cost}</p>
+                )}
               </div>
 
               <span className="space-x-4">
@@ -82,10 +83,7 @@ export default function PropertyCard({
                   Get In Touch
                 </Link>
               </button>
-              <span
-                className={"text-2xl" + (isFavourite && "favourite")}
-                onClick={handleFavouriteClick}
-              >
+              <span onClick={handleFavouriteClick}>
                 {<FontAwesomeIcon icon={faHeart} />}
               </span>
             </div>

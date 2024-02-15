@@ -9,7 +9,9 @@ export default function HomePage() {
       <NavBar />
       <JumboTron />
       <div className="flex flex-col text-center font-semibold mt-3 text-2xl">
-        <h2>Helpful Articles</h2>
+        <h2 className="text-2xl font-extrabold leading-none tracking-tight text-primary md:text-3xl lg:text-4xl dark:text-white">
+          Helpful Articles
+        </h2>
       </div>
       <div className="flex flex-col justify-center items-center lg:flex-row mb-10">
         <ArticleCard

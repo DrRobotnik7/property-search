@@ -2,13 +2,17 @@ import NavBar from "../../components/NavBar/NavBar";
 import SearchResults from "../../components/SearchResults/SearchResults";
 import { useState, useEffect } from "react";
 import Footer from "../../components/Footer/Footer";
+import Heading from "../../components/Headings/Heading";
 export default function Favourites() {
   const [favourties, setFavourites] = useState(() => {
     return JSON.parse(localStorage.getItem("favourites"));
   });
 
   useEffect(() => {
-    localStorage.setItem("favourites", JSON.stringify(favourties));
+    if (favourties) {
+      const itemToSet = [...favourties];
+      localStorage.setItem("favourites", JSON.stringify(itemToSet));
+    }
   }, [favourties]);
 
   function handleFavouriteDeselect(property) {
@@ -22,20 +26,20 @@ export default function Favourites() {
   return (
     <>
       <NavBar />
-      <div className="flex items-center justify-center text-2xl font-bold m-4">
-        <h1>Favourites</h1>
+
+      <div className="m-8">
+        <Heading>Favourites</Heading>
+
+        {favourties !== null ? (
+          <SearchResults
+            properties={favourties}
+            handleFavouriteClick={handleFavouriteDeselect}
+          />
+        ) : (
+          <p>No favourites to show</p>
+        )}
       </div>
 
-      {favourties !== null ? (
-        <SearchResults
-          properties={favourties}
-          handleFavouriteClick={handleFavouriteDeselect}
-        />
-      ) : (
-        <div className="flex items-center justify-center">
-          <h3>No favourties to show</h3>
-        </div>
-      )}
       <Footer />
     </>
   );

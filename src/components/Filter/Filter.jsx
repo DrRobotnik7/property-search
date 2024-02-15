@@ -7,19 +7,23 @@ export default function Filter({ name, options, handleSelect }) {
 
   return (
     <>
-      <label htmlFor={name}>{name}</label>
-      <select
-        name={camalize(name)}
-        id={name}
-        key={name}
-        onChange={handleSelect}
-      >
-        {options.map((opt) => (
-          <option key={opt.id} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
+      <div className="mx-1">
+        <label className="pe-1 bg-secondary" htmlFor={name}>
+          {name}{" "}
+        </label>
+        <select
+          name={camalize(name)}
+          id={name}
+          key={name}
+          onChange={handleSelect}
+        >
+          {options.map((opt) => (
+            <option key={opt.id} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      </div>
     </>
   );
 }
