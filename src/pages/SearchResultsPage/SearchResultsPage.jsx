@@ -21,18 +21,24 @@ export default function SearchResultsPage() {
     maxBathrooms: null,
     minBathrooms: null,
   });
-  const [favourties, setFavourites] = useState(
-    JSON.parse(localStorage.getItem("favourites"))
-  );
+  const [favourites, setFavourites] = useState(() => {
+    console.log("Local storage", localStorage.getItem("favourites"));
+    return JSON.parse(localStorage.getItem("favourites"));
+    // if (JSON.parse(local_storage === null || local_storage.length <= 0)) {
+    //   return local_storage;
+    // } else {
+    //   return local_storage;
+    // }
+  });
 
   useEffect(() => {
     filterProperties();
   }, [searchFilters]);
 
   useEffect(() => {
-    console.log("Favourites", favourties);
-    localStorage.setItem("favourites", JSON.stringify(favourties));
-  }, [favourties]);
+    console.log("Favourites", favourites);
+    localStorage.setItem("favourites", JSON.stringify(favourites));
+  }, [favourites]);
 
   useEffect(() => {
     // run API call with search data from homepage
@@ -104,12 +110,6 @@ export default function SearchResultsPage() {
 
   function testProp(prop, key, isMax) {
     // tests the property against a specific key and value in the filters array
-    // console.log(
-    //   prop[key.substring(3).toLowerCase()],
-    //   key,
-    //   searchFilters[key],
-    //   isMax
-    // );
     //min/max is removed from the start of the key name and it is changed to lower case to match the keys of the property object
     return isMax
       ? parseInt(prop[key.substring(3).toLowerCase()]) <=
@@ -159,14 +159,21 @@ export default function SearchResultsPage() {
     ///check if item already in favourites
     const currentFavourites = JSON.parse(localStorage.getItem("favourites"));
     let propertySavedAlready = false;
+
     //loop over each element in the array
-    for (const favourite of currentFavourites) {
-      propertySavedAlready = parseInt(favourite.id) == property.id;
-    }
-    if (!propertySavedAlready) {
-      setFavourites(() => [...currentFavourites, property]);
+    if (currentFavourites !== null) {
+      for (const favourite of currentFavourites) {
+        console.log("Favourtie", favourite);
+        console.log("Current Favourties", currentFavourites);
+        propertySavedAlready = parseInt(favourite.id) == property.id;
+      }
+      if (!propertySavedAlready) {
+        setFavourites(() => [...currentFavourites, property]);
+      } else {
+        alert("Property saved already");
+      }
     } else {
-      alert("Property saved already");
+      setFavourites([property]);
     }
   }
 

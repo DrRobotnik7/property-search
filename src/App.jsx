@@ -6,7 +6,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import NavBar from "../src/components/NavBar/NavBar";
 import Footer from "../src/components/Footer/Footer";
 import HomePage from "./pages/HomePage/HomePage";
 import ContactPage from "./pages/ContactPage/ContactPage";
@@ -27,9 +26,7 @@ const router = createBrowserRouter(routeDefinitions);
 function App() {
   return (
     <>
-
       <RouterProvider router={router} />
-      <Footer />
     </>
   );
 }

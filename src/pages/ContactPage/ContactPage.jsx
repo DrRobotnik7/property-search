@@ -1,10 +1,11 @@
 import NavBar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer/Footer";
 
-export default function ContactPage({ state }) {
+export default function ContactPage() {
   return (
     <>
       <NavBar />
-      <div className="flex items-center justify-center p-12">
+      <div className="flex items-center justify-center p-12 md:mb-8">
         <div className="mx-auto w-full max-w-[550px]">
           <form
             action="https://getform.io/f/13fdd2c6-8887-4bfd-87c1-025d67d56172"
@@ -12,7 +13,7 @@ export default function ContactPage({ state }) {
           >
             <div className="mb-5">
               <label
-                for="name"
+                htmlFor="name"
                 className="mb-3 block text-base font-medium text-[#07074D]"
               >
                 Full Name
@@ -27,7 +28,7 @@ export default function ContactPage({ state }) {
             </div>
             <div className="mb-5">
               <label
-                for="email"
+                htmlFor="email"
                 className="mb-3 block text-base font-medium text-[#07074D]"
               >
                 Email Address
@@ -42,7 +43,7 @@ export default function ContactPage({ state }) {
             </div>
             <div className="mb-5">
               <label
-                for="subject"
+                htmlFor="subject"
                 className="mb-3 block text-base font-medium text-[#07074D]"
               >
                 Subject
@@ -59,7 +60,7 @@ export default function ContactPage({ state }) {
             </div>
             <div className="mb-5">
               <label
-                for="message"
+                htmlFor="message"
                 className="mb-3 block text-base font-medium text-[#07074D]"
               >
                 Message
@@ -80,6 +81,7 @@ export default function ContactPage({ state }) {
           </form>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
