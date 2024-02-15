@@ -31,8 +31,7 @@ export default function SearchResultsPage() {
   const [listingStatus, setListingStatus] = useState(
     location.state.listing_status
   );
-
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     filterProperties();
@@ -48,23 +47,12 @@ export default function SearchResultsPage() {
   useEffect(() => {
     // run API call with search data from homepage
     const getData = async () => {
-
-      // setLoading(true);
-      /* } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false); 
-      }
-    };*/
-
       if (location.state.search && location.state.listing_status) {
-        console.log("Term", location.state.search);
         await fetchProperties(
           location.state.search,
           location.state.listing_status
         );
       }
-
     };
     getData();
   }, []);
@@ -86,7 +74,6 @@ export default function SearchResultsPage() {
 
   //API call to fetch properties
   async function fetchProperties(searchTerm, listing_status) {
-    console.log("Search term", searchTerm);
     const options = {
       method: "GET",
       url: "https://zoopla.p.rapidapi.com/properties/list",
@@ -103,8 +90,8 @@ export default function SearchResultsPage() {
     };
 
     try {
+      setLoading(true);
       const response = await axios.request(options);
-      console.log(response.data);
       //set properties based on data received from API call
       setPropertiesArray(parseRawPropertiesData(response.data));
       // initialize properties array that can be updated based on filters
@@ -112,6 +99,8 @@ export default function SearchResultsPage() {
     } catch (error) {
       alert("Unknown location entered. Please try again");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -148,7 +137,7 @@ export default function SearchResultsPage() {
       let addToFilterProps = true;
       for (const filter in searchFilters) {
         // loop only runs on filters that have been set (not equal to null)
-        if (searchFilters[filter] !== null) {
+        if (searchFilters[filter] !== null && searchFilters[filter] !== "") {
           addToFilterProps = filter.includes("max")
             ? testProp(prop, filter, true)
             : testProp(prop, filter, false);
@@ -173,7 +162,6 @@ export default function SearchResultsPage() {
       ...prevFilters,
       [name]: value,
     }));
-    console.log(searchFilters);
   }
 
   function handleFavouriteClick(property) {
@@ -184,22 +172,24 @@ export default function SearchResultsPage() {
     //loop over each element in the array
     if (currentFavourites !== null) {
       for (const favourite of currentFavourites) {
-        console.log("Favourtie", favourite);
-        console.log("Current Favourties", currentFavourites);
         propertySavedAlready = parseInt(favourite.id) == property.id;
       }
       if (!propertySavedAlready) {
         setFavourites(() => [...currentFavourites, property]);
+        alert("Property added to favourites");
       } else {
         alert("Property saved already");
       }
     } else {
       setFavourites([property]);
+      alert("Property added to favourites");
     }
   }
 
   function handleListingTypeChange(target) {
-    console.log(target.target.value);
+    if (target.target.value === "") {
+      setListingStatus("rent");
+    } else setListingStatus(target.target.value);
   }
 
   return (
@@ -209,31 +199,34 @@ export default function SearchResultsPage() {
         <Heading> {searchTerm} Properties</Heading>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 mb-3">
-        <div className="flex flex-col text-center">
-          <h3>Search Other Properties</h3>
-          <SearchInput onInputChange={handleSearch} width={"w-50"} />
-          <Filter
-            name={"Rent"}
-            options={["rent", "sale"]}
-            handleSelect={handleListingTypeChange}
-          />
+        <div className="flex flex-col text-center px-3">
+          <h3 className="mb-2">Search Other Properties</h3>
+
+          <SearchInput onInputChange={handleSearch} width={"w-auto"} />
+          <div className="mt-2">
+            <Filter
+              name={"Rent"}
+              options={["rent", "sale"]}
+              handleSelect={handleListingTypeChange}
+            />
+          </div>
         </div>
         <div className="col-span-3">
-          <Filters className="" onSelect={handleFilterSelect} />
+          <Filters rates={listingStatus} onSelect={handleFilterSelect} />
         </div>
         {/* <Button onClick=  >Reset filters</Button> */}
       </div>
       <div className="md:mb-8">
-        <SearchResults
-          properties={filteredProperties}
-          handleFavouriteClick={handleFavouriteClick}
-        />
-             {/* {loading ? (
-        <div>Loading...</div> 
-      ) : ( <SearchResults
-        properties={filteredProperties}
-        handleFavouriteClick={handleFavouriteClick}
-      /> )} */}
+        {loading ? (
+          <div className="text-center">
+            <Heading>Loading...</Heading>
+          </div>
+        ) : (
+          <SearchResults
+            properties={filteredProperties}
+            handleFavouriteClick={handleFavouriteClick}
+          />
+        )}
       </div>
       <Footer></Footer>
     </>
