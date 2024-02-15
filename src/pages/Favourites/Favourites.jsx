@@ -22,7 +22,9 @@ export default function Favourites() {
   return (
     <>
       <NavBar />
-      <h2>Favourites</h2>
+      <div className="flex items-center justify-center text-2xl font-bold m-4">
+        <h1>Favourites</h1>
+      </div>
 
       {favourties !== null ? (
         <SearchResults
@@ -30,7 +32,7 @@ export default function Favourites() {
           handleFavouriteClick={handleFavouriteDeselect}
         />
       ) : (
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center justify-center">
           <h3>No favourties to show</h3>
         </div>
       )}
