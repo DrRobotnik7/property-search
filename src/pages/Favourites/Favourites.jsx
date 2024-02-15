@@ -26,6 +26,7 @@ export default function Favourites() {
   return (
     <>
       <NavBar />
+
       <div className="m-8">
         <Heading>Favourites</Heading>
 
@@ -38,6 +39,7 @@ export default function Favourites() {
           <p>No favourites to show</p>
         )}
       </div>
+
       <Footer />
     </>
   );
