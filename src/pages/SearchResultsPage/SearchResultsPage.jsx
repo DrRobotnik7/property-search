@@ -33,6 +33,8 @@ export default function SearchResultsPage() {
     location.state.listing_status
   );
 
+  // const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     filterProperties();
   }, [searchFilters]);
@@ -47,6 +49,15 @@ export default function SearchResultsPage() {
   useEffect(() => {
     // run API call with search data from homepage
     const getData = async () => {
+
+      // setLoading(true);
+      /* } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false); 
+      }
+    };*/
+
       if (location.state.search && location.state.listing_status) {
         console.log("Term", location.state.search);
         await fetchProperties(
@@ -54,6 +65,7 @@ export default function SearchResultsPage() {
           location.state.listing_status
         );
       }
+
     };
     getData();
   }, []);
@@ -218,6 +230,12 @@ export default function SearchResultsPage() {
           properties={filteredProperties}
           handleFavouriteClick={handleFavouriteClick}
         />
+             {/* {loading ? (
+        <div>Loading...</div> 
+      ) : ( <SearchResults
+        properties={filteredProperties}
+        handleFavouriteClick={handleFavouriteClick}
+      /> )} */}
       </div>
       <Footer></Footer>
     </>

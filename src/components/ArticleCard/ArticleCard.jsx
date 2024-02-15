@@ -2,7 +2,7 @@ export default function ArticleCard(props) {
   return (
     <>
       <div className="max-w-md m-6 hover:scale-105">
-        <a href={props.path}>
+        <a href={props.path} target="_blank">
           <img
             className="h-48 w-full object-cover max-w-72"
             src={props.image}
