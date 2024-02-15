@@ -7,8 +7,8 @@ export default function Filter({ name, options, handleSelect }) {
 
   return (
     <>
-      <div className="mx-1">
-        <label className="pe-1 bg-secondary" htmlFor={name}>
+      <div className="ms-1">
+        <label className="px-1 bg-secondary" htmlFor={name}>
           {name}{" "}
         </label>
         <select
@@ -17,6 +17,9 @@ export default function Filter({ name, options, handleSelect }) {
           key={name}
           onChange={handleSelect}
         >
+          <option selected key={0} value="">
+            --
+          </option>
           {options.map((opt) => (
             <option key={opt.id} value={opt}>
               {opt}

@@ -9,7 +9,7 @@ export default function SearchInput({ onInputChange, width }) {
         type="text"
         required
         size="10"
-        placeholder="Where do you want to live?"
+        placeholder="Type location & press enter to search"
         onKeyUp={onInputChange}
       />
     </>
