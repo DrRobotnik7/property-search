@@ -23,17 +23,18 @@ URL: https://abode-property-search.netlify.app/
 - You will be taken to a search results page that shows the current listings. You can filter the results further using the drop-down filters at the top of the page.
 - To keep track of your favourite listings click on the heart icon at the bottom of the property card. This will be saved to your favourites, which can be navigated to via the navigation bar.
 - To express your interest in a property click on the "Get In Touch" button at the bottom of the property card and you will be taken to the contact page. Submit your query and we will respond ASAP!
+- On the home page are a few helpful articles. If you click on them you will be redirected to the article on an external website.
 
-![Abode Property Search Screenshot](./src/assets/images/abode-screenshot.png)
+![Abode Property Search Screenshot](./src/assets/images/Abode-screenshot.png)
 
 ## Credits
 
 Contributors towards this project:
 
-[Naike Bindella](https://github.com/Naike-B)
-[Jefferson Daley](https://github.com/Whefert)
-[Hillary Mason](https://github.com/HillaryM17)
-[Jack Johnson](https://github.com/DrRobotnik7)
+[Naike Bindella](https://github.com/Naike-B)  
+[Jefferson Daley](https://github.com/Whefert)  
+[Hillary Mason](https://github.com/HillaryM17)  
+[Jack Johnson](https://github.com/DrRobotnik7)  
 
 I would also like to acknowledge the developers that created React, Tailwind, HTML React Parser, Node.js and the Zoopla API https://rapidapi.com/apidojo/api/zoopla.
 
